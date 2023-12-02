@@ -7,10 +7,10 @@ import Posts from "./pages/Posts";
 import Admin from "./pages/Admin";
 import Blog from "./pages/Blog";
 import Login from "./pages/Login";
-import {createBrowserRouter, RouterProvider, Route} from "react-router-dom";
+import {createHashRouter, RouterProvider, Route} from "react-router-dom";
 
 
-const router = createBrowserRouter([
+const router = createHashRouter([
     {
         path:"/",
         element: <Home/>
