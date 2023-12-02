@@ -1,5 +1,5 @@
 {
-  "homepage": "https://joelHarawa.github.io/cultrmsu",
+  "homepage": "https://app.cultrmagazine.com",
   "dependencies": {
     "axios": "^1.6.2",
     "react": "^18.2.0",
@@ -30,5 +30,11 @@
   },
   "devDependencies": {
     "gh-pages": "^6.1.0"
+  },
+  "proxy": {
+    "/api": {
+      "target": "http://18.219.147.241:4000",
+      "secure": false
+    }
   }
 }
