@@ -31,10 +31,5 @@
   "devDependencies": {
     "gh-pages": "^6.1.0"
   },
-  "proxy": {
-    "/api": {
-      "target": "http://18.219.147.241:4000",
-      "secure": false
-    }
-  }
+  "proxy": "http://18.219.147.241:4000"
 }

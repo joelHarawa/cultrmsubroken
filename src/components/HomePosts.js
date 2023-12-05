@@ -44,7 +44,6 @@ const Headline = styled(Link)`
 `;
 
 const HomePosts = () => {
-    const apiUrl = 'http://18.219.147.241:4000';
     const [posts, setPosts] = useState([]);
     const [postNumber, setPostNumber] = useState(0);
 
@@ -52,7 +51,8 @@ const HomePosts = () => {
         const getPosts = async() => {
             try {
                 console.log("get that post")
-                const response = await axios.get(`${apiUrl}/api/post/getPost`);
+                const response = await axios.get("/api/post/getPost");
+
                 console.log(response.data);
                 setPosts(response.data);
             } catch (error) {

@@ -1,5 +1,7 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import styled from "styled-components";
+import axios from "axios";
+import {Link} from "react-router-dom";
 
 const Container = styled.div`
     height: 52vh;
@@ -7,6 +9,7 @@ const Container = styled.div`
     display: flex;
     justify-content: center;
     width: 100%;
+    position: relative;
 `;
 
 const Wrapper = styled.div`
@@ -15,8 +18,8 @@ const Wrapper = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  position: absolute;
 `;
-
 
 const InfoTitle = styled.h1`
     font-size: calc(40px + 4vw);
@@ -25,6 +28,7 @@ const InfoTitle = styled.h1`
     display: flex;
     height: 20%;
     line-height: 0.8;
+    color: white;
 `;
 
 const Info = styled.p`
@@ -33,25 +37,69 @@ const Info = styled.p`
     text-align: center;
     display: flex;
     height: 30%;
+    color: white;
 `;
 
-const InfoLink = styled.p`
+const InfoLink = styled(Link)`
     font-size: 2.8vh;
     font-family: 'Archivo Black', sans-serif;
     display: flex;
     text-align: center;
     height: 30%;
+    color: white;
+    &:hover {
+      text-decoration:underline;
+      color: white;
+    }
+`;
+
+const Image = styled.img`
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 `;
 
 const HeadContent = () => {
+    const [posts, setPosts] = useState([]);
+    useEffect(() => {
+        const getPosts = async() => {
+            try {
+                console.log("get that post")
+                const response = await axios.get("/api/post/getPost");
+
+                console.log(response.data);
+                setPosts(response.data);
+            } catch (error) {
+                console.log(error, "This failed");
+            }
+        }
+        getPosts();
+    }, []);
+
+
+    let index = posts.length-1;
     return (
-        <Container>
-            <Wrapper>
-                <InfoTitle>Finding Culture at MSU</InfoTitle>
-                <Info>All of the communities, clubs and organizations that you can join</Info>
-                <InfoLink>READ MORE</InfoLink>
-            </Wrapper>
-        </Container>
+            <div>
+                {posts.length === 0 ? (
+                    <Container>
+                        <Image src={""}></Image>
+                        <Wrapper>
+                            <InfoTitle>"Loading..."</InfoTitle>
+                            <Info>"Loading...</Info>
+                            <InfoLink to="">"Loading..."</InfoLink>
+                        </Wrapper>
+                    </Container>
+                    ) : (
+                    <Container>
+                        <Image src={posts[index].photoUrl}></Image>
+                        <Wrapper>
+                            <InfoTitle>{posts[index].title}</InfoTitle>
+                            <Info>{posts[index].tag}</Info>
+                            <InfoLink to={`/posts/${index}`}>READ MORE</InfoLink>
+                        </Wrapper>
+                    </Container>
+            )}
+            </div>
     );
 }
 

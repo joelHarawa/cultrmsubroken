@@ -83,6 +83,7 @@ const NewComponent = () => {
     const [date, setDate] = useState("");
     const [category, setCategory] = useState("");
     const [photo, setPhoto] = useState("");
+    const [tag, setTag] = useState("");
     const handleSubmit = async () => {
         try {
             const article = new FormData();
@@ -91,8 +92,9 @@ const NewComponent = () => {
             article.append("body", body);
             article.append("category", category);
             article.append("date", date);
+            article.append("tag", tag);
 
-            const response = await axios.post(`${apiUrl}/api/post/addPost`, article, {
+            const response = await axios.post("/api/post/addPost", article, {
                 headers: {"Content-Type" : "multipart/form-data"},
             });
             console.log("Article successfully submitted:", response.data);
@@ -111,6 +113,10 @@ const NewComponent = () => {
     }
     const handleBody = (e) => {
         setBody(e.target.value);
+    }
+
+    const handleTag = (e) => {
+        setTag(e.target.value);
     }
     const handleUpload = (e) => {
         setPhoto(e.target.files[0])
@@ -152,6 +158,13 @@ const NewComponent = () => {
             <Input placeholder="Enter article category..."
                    value={category}
                    onChange={handleCategory}
+            />
+            <SubtitleBox>
+                <Subtitle>Article Title</Subtitle>
+            </SubtitleBox>
+            <Input placeholder="Enter article tag line..."
+                   value={tag}
+                   onChange={handleTag}
             />
             <SubtitleBox>
                 <Subtitle>Date</Subtitle>

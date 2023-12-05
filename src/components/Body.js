@@ -52,7 +52,7 @@ const Body = ({pictureLink, bodyText}) => {
             </TextContainer>
             <SponsoredContent>
                 <SponsorInfo>Sponsored Content</SponsorInfo>
-                <Sponsors>God knows it</Sponsors>
+                <Sponsors></Sponsors>
             </SponsoredContent>
         </BodyContainer>
     );

@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.js": "/cultrmsu/static/js/main.9837f890.js",
-    "index.html": "/cultrmsu/index.html",
-    "main.9837f890.js.map": "/cultrmsu/static/js/main.9837f890.js.map"
+    "main.js": "/static/js/main.72988e63.js",
+    "index.html": "/index.html",
+    "main.72988e63.js.map": "/static/js/main.72988e63.js.map"
   },
   "entrypoints": [
-    "static/js/main.9837f890.js"
+    "static/js/main.72988e63.js"
   ]
 }
