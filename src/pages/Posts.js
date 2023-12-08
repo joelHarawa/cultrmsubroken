@@ -29,7 +29,7 @@ const Direction = styled.h2`
 `;
 
 const Posts = () => {
-    const apiUrl = 'http://18.219.147.241:4000';
+    const apiUrl = 'https://18.219.147.241:4000';
     const {postIndex} = useParams();
     const [posts, setPosts] = useState([]);
     const [postNumber, setPostNumber] = useState(parseInt(postIndex,10) || 0);

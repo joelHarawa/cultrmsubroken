@@ -60,12 +60,13 @@ const Image = styled.img`
 `;
 
 const HeadContent = () => {
+    const apiUrl = 'https://18.219.147.241:4000';
     const [posts, setPosts] = useState([]);
     useEffect(() => {
         const getPosts = async() => {
             try {
                 console.log("get that post")
-                const response = await axios.get("/api/post/getPost");
+                const response = await axios.get(`${apiUrl}/api/post/getPost`);
 
                 console.log(response.data);
                 setPosts(response.data);

@@ -77,7 +77,7 @@ const Date = styled.input`
 `;
 
 const NewComponent = () => {
-    const apiUrl = 'http://18.219.147.241:4000';
+    const apiUrl = 'https://18.219.147.241:4000';
     const [title, setTitle] = useState("");
     const [body, setBody] = useState("");
     const [date, setDate] = useState("");
@@ -94,7 +94,7 @@ const NewComponent = () => {
             article.append("date", date);
             article.append("tag", tag);
 
-            const response = await axios.post("/api/post/addPost", article, {
+            const response = await axios.post(`${apiUrl}/api/post/addPost`, article, {
                 headers: {"Content-Type" : "multipart/form-data"},
             });
             console.log("Article successfully submitted:", response.data);

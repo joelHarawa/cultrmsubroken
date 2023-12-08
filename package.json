@@ -30,6 +30,5 @@
   },
   "devDependencies": {
     "gh-pages": "^6.1.0"
-  },
-  "proxy": "http://18.219.147.241:4000"
+  }
 }
