@@ -77,7 +77,7 @@ const Date = styled.input`
 `;
 
 const NewComponent = () => {
-    const apiUrl = 'https://18.219.147.241:4000';
+    const apiUrl = 'https://18.219.147.241';
     const [title, setTitle] = useState("");
     const [body, setBody] = useState("");
     const [date, setDate] = useState("");

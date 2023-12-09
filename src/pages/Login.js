@@ -51,7 +51,7 @@ const Button = styled.button`
 `;
 
 const Login = () => {
-    const apiUrl = 'https://18.219.147.241:4000';
+    const apiUrl = 'https://18.219.147.241';
     const [inputs, setInputs] = useState({
         username:"",
         password:""

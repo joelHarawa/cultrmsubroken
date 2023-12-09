@@ -44,7 +44,7 @@ const Headline = styled(Link)`
 `;
 
 const HomePosts = () => {
-    const apiUrl = 'https://18.219.147.241:4000';
+    const apiUrl = 'https://18.219.147.241';
     const [posts, setPosts] = useState([]);
     const [postNumber, setPostNumber] = useState(0);
 

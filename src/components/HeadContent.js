@@ -60,7 +60,7 @@ const Image = styled.img`
 `;
 
 const HeadContent = () => {
-    const apiUrl = 'https://18.219.147.241:4000';
+    const apiUrl = 'https://18.219.147.241';
     const [posts, setPosts] = useState([]);
     useEffect(() => {
         const getPosts = async() => {
