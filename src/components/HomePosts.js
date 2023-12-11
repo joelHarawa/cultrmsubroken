@@ -28,6 +28,7 @@ const Image = styled.img`
 
 const Post = styled.div`
     display: flex;
+    padding-bottom: 10px;
 `;
 
 
@@ -46,7 +47,6 @@ const Headline = styled(Link)`
 const HomePosts = () => {
     const apiUrl = 'https://18.219.147.241';
     const [posts, setPosts] = useState([]);
-    const [postNumber, setPostNumber] = useState(0);
 
     useEffect(() => {
         const getPosts = async() => {

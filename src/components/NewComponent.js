@@ -44,28 +44,22 @@ const Button = styled.button`
   padding: 1.5vh 5vw;
   font-family: 'Cormorant Garamond', serif;
   border: none;
+  font-size: 15px;
 `;
 
 const ImageContainer = styled.div`
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
+  width: 80vw;
+  height: 50vh;
+  margin-top: 10px;
+  background-color: #ddd;
+  justify-content: center;
+  align-items: center;
 `;
+
 const Photo = styled.input`
     display: none;
-`;
-
-const PhotoLabel = styled.label`
-    background-color: black;
-    color: white;
-    cursor: pointer;
-    padding: 1.5vh 5vw;
-    font-family: 'Cormorant Garamond', serif;
-`;
-
-const ImagePreview = styled.img`
-  max-width: 100%;
-  max-height: 300px;
-  margin-top: 10px;
 `;
 
 const Date = styled.input`
@@ -74,6 +68,29 @@ const Date = styled.input`
   padding: 5px;
   font-family: 'Cormorant Garamond', serif;
   font-size: 18px;
+`;
+
+const ButtonBox = styled.div`
+    padding: 15px;
+    width: 80vw;
+    display: flex;
+    justify-content: center;
+`;
+
+const PhotoLabel = styled.label`
+  background-color: black;
+  color: white;
+  cursor: pointer;
+  padding: 1.5vh 5vw;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 16px;
+`;
+
+const ImagePreview = styled.img`
+  width: 100%;
+  max-height: 100%;
+  background-color: #ddd;
+  object-fit: cover;
 `;
 
 const NewComponent = () => {
@@ -172,14 +189,18 @@ const NewComponent = () => {
             <Date type="date" value={date} onChange={handleDate}/>
 
             <SubtitleBox>
-                <Subtitle>Cover Photo</Subtitle>
+                <Subtitle>Photo</Subtitle>
             </SubtitleBox>
             <ImageContainer>
-                {photo && <ImagePreview id="imagePreview" src={URL.createObjectURL(photo)} alt="Preview"/>}
-                <PhotoLabel htmlFor="photoInput">Upload Photo</PhotoLabel>
+                <ImagePreview id="imagePreview" src={photo ? URL.createObjectURL(photo) : ""}/>
                 <Photo type="file" id="photoInput" accept="image/*" onChange={handleUpload}/>
             </ImageContainer>
-            <Button onClick={handleSubmit}>Submit Article</Button>
+            <ButtonBox>
+                <PhotoLabel htmlFor="photoInput">Upload Photo</PhotoLabel>
+            </ButtonBox>
+            <ButtonBox>
+                <Button onClick={handleSubmit}>Submit Article</Button>
+            </ButtonBox>
         </Container>
     )
 }

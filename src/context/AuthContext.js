@@ -3,7 +3,7 @@ import axios from "axios";
 export const AuthContext = createContext();
 
 export const AuthContextProvider = ({children}) => {
-    const apiUrl = 'http://18.219.147.241:4000';
+    const apiUrl = 'https://18.219.147.241';
     const [currentUser, setUser] = useState(JSON.parse(localStorage.getItem("user")) || null);
 
     const login = async (inputs) => {

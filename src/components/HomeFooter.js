@@ -7,6 +7,7 @@ const Container = styled.div`
     display: flex;
     height: 50vh;
     justify-content: center;
+    padding-top: 5px;
 `;
 
 const Content = styled.div`

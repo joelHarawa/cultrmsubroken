@@ -1,10 +1,21 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import Navbar from "../components/Navbar";
 import styled from "styled-components";
+import {FaInstagram} from "react-icons/fa";
+import {Link} from "react-router-dom";
+import axios from "axios";
 
 const Container = styled.div`
     display: flex;
     align-items: center;
+`;
+
+const InstagramLink = styled(Link)`
+    color: black;
+    text-decoration: none;
+    padding-top: 10px;
+    font-size: 30px;
+    width: fit-content;
 `;
 
 const Wrapper = styled.div`
@@ -33,13 +44,13 @@ const Subtitle = styled.h2`
 
 
 const Image = styled.img`
-    width: 90%;
+    width: 50%;
 `;
 
 const Body = styled.p`
     font-size: 20px;
     font-family: 'Cormorant Garamond', serif;
-    width: 90%;
+    width: 50%;
 `;
 
 const SubWrapper = styled.div`
@@ -55,26 +66,61 @@ const Info = styled.div`
 
 const InfoWrapper = styled.div`
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   width: 70%;
 `;
+
+const MainWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+`;
 const About = () => {
+    const apiUrl = 'https://18.219.147.241';
+    const [about, setAbout] = useState([]);
+    useEffect(() => {
+        const getAbout = async() => {
+            try {
+                console.log("get about")
+                const response = await axios.get(`${apiUrl}/api/post/getAbout`);
+
+                console.log(response.data);
+                setAbout(response.data);
+            } catch (error) {
+                console.log(error, "This failed");
+            }
+        }
+        getAbout();
+    }, []);
+
+    let index = about.length -1;
     return (
         <div>
             <Navbar/>
             <Container>
                 <Wrapper>
-                    <Title>About</Title>
-                    <Image src="https://cultr6.files.wordpress.com/2023/06/noguchi-table-wine-magazines.jpg"/>
-                    <Body>Five years ago, recently married couple Fred and Anna founded Cult, a blog about their passion for design, food and travel. Based between Amsterdam and Tenerife, they have always appreciated the time and care artisans put into manufacturing quality products. They traveled to learn how these products were made, and began documenting their travels.</Body>
+                    <Title>About Us</Title>
+                    {about.length === 0 ? (
+                        <MainWrapper>
+                    <Body>{"Loading..."}</Body>
+                    <Image src={"Loading"}/>
+                    <Body>{"Loading..."}</Body>
+                            </MainWrapper>) : (
+                                <MainWrapper>
+                    <Body>{about[index].intro}</Body>
+                    <Image src={about[index].photoUrl}/>
+                    <Body>{about[index].body}</Body>
+                                </MainWrapper>
+                )}
                     <SubWrapper>
                         <Subtitle>Get in Touch</Subtitle>
                         <InfoWrapper>
-                            <Info>Balboastraat 54 Amsterdam,
-                                Noord-Holland, 1234</Info>
-                            <Info>fred@cult.ish / anna@cult.ish
-                                (123) 456-0987</Info>
-
+                            <Info>Bessey Room 300</Info>
+                            <InstagramLink to="https://www.instagram.com/cultr_magazine/">
+                                <FaInstagram/>
+                            </InstagramLink>
                         </InfoWrapper>
                     </SubWrapper>
                 </Wrapper>

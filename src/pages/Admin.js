@@ -1,8 +1,9 @@
 import React, {useEffect} from "react";
-import NewComponent from "../components/NewComponent";
 import {useContext} from "react";
 import {AuthContext} from "../context/AuthContext";
 import {useNavigate} from "react-router-dom";
+import AdminNavbar from "../components/AdminNavbar";
+import WelcomeAdmin from "../components/WelcomeAdmin";
 
 const Admin = () => {
     const {currentUser} = useContext(AuthContext);
@@ -19,7 +20,10 @@ const Admin = () => {
     }
 
     return (
-        <NewComponent/>
+        <div>
+            <AdminNavbar/>
+            <WelcomeAdmin/>
+        </div>
     );
 }
 

@@ -8,6 +8,11 @@ import Admin from "./pages/Admin";
 import Blog from "./pages/Blog";
 import Login from "./pages/Login";
 import {createHashRouter, RouterProvider, Route} from "react-router-dom";
+import AboutAdmin from "./pages/AboutAdmin";
+import PostsAdmin from "./pages/PostsAdmin";
+import GetInvolvedAdmin from "./pages/GetInvolvedAdmin";
+import ContactAdmin from "./pages/ContactAdmin";
+import BlogAdmin from "./pages/BlogAdmin";
 
 
 const router = createHashRouter([
@@ -46,6 +51,26 @@ const router = createHashRouter([
     {
         path:"/login",
         element: <Login/>
+    },
+    {
+        path:"/admin/about",
+        element: <AboutAdmin/>
+    },
+    {
+        path:"/admin/posts",
+        element: <PostsAdmin/>
+    },
+    {
+        path:"/admin/getInvolved",
+        element: <GetInvolvedAdmin/>
+    },
+    {
+        path:"/admin/contact",
+        element: <ContactAdmin/>
+    },
+    {
+        path:"/admin/blog",
+        element: <BlogAdmin/>
     }
 ]);
 const App = () => {
