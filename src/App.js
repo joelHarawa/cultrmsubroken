@@ -13,6 +13,7 @@ import PostsAdmin from "./pages/PostsAdmin";
 import GetInvolvedAdmin from "./pages/GetInvolvedAdmin";
 import ContactAdmin from "./pages/ContactAdmin";
 import BlogAdmin from "./pages/BlogAdmin";
+import HomeAdmin from "./pages/HomeAdmin";
 
 
 const router = createHashRouter([
@@ -71,6 +72,10 @@ const router = createHashRouter([
     {
         path:"/admin/blog",
         element: <BlogAdmin/>
+    },
+    {
+        path:"/admin/home",
+        element: <HomeAdmin/>
     }
 ]);
 const App = () => {

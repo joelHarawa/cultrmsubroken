@@ -64,7 +64,6 @@ const Navbar = () => {
                     <MenuItem to="/posts">Posts</MenuItem>
                     <MenuItem to="/getinvolved">Get Involved</MenuItem>
                     <MenuItem to="/contact">Contact</MenuItem>
-                    <MenuItem to="/blog">Blog</MenuItem>
                 </Right>
             </Wrapper>
         </Container>

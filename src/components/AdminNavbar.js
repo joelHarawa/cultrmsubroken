@@ -65,6 +65,7 @@ const AdminNavbar = () => {
                     <MenuItem to="/admin/getinvolved">Edit Get Involved</MenuItem>
                     <MenuItem to="/admin/contact">Edit Contact</MenuItem>
                     <MenuItem to="/admin/blog">Edit Blog</MenuItem>
+                    <MenuItem to="/admin/home">Edit Home</MenuItem>
                 </Right>
             </Wrapper>
         </Container>
