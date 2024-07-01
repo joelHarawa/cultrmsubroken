@@ -20,10 +20,7 @@ const AboutAdmin = () => {
     }
 
     return (
-        <div>
-            <AdminNavbar/>
-            <EditAbout/>
-        </div>
+        <EditAbout/>
     );
 }
 

@@ -1,19 +1,16 @@
 import React from "react";
 import Home from "./pages/Home";
 import About from "./pages/About";
-import GetInvolved from "./pages/GetInvolved";
-import Contact from "./pages/Contact";
-import Posts from "./pages/Posts";
+import Issues from "./pages/Issues";
 import Admin from "./pages/Admin";
 import Blog from "./pages/Blog";
 import Login from "./pages/Login";
 import {createHashRouter, RouterProvider, Route} from "react-router-dom";
 import AboutAdmin from "./pages/AboutAdmin";
-import PostsAdmin from "./pages/PostsAdmin";
-import GetInvolvedAdmin from "./pages/GetInvolvedAdmin";
-import ContactAdmin from "./pages/ContactAdmin";
+import IssuesAdmin from "./pages/IssuesAdmin";
 import BlogAdmin from "./pages/BlogAdmin";
-import HomeAdmin from "./pages/HomeAdmin";
+import SignUp from "./pages/SignUp";
+import Profile from "./pages/Profile";
 
 
 const router = createHashRouter([
@@ -26,57 +23,41 @@ const router = createHashRouter([
         element: <About/>
     },
     {
-        path:"/getinvolved",
-        element: <GetInvolved/>
-    },
-    {
-        path:"/contact",
-        element: <Contact/>
-    },
-    {
-        path:"/posts",
-        element: <Posts/>
-    },
-    {
-        path:"/posts/:postIndex",
-        element: <Posts/>
-    },
-    {
-        path:"/admin",
-        element: <Admin/>
+        path:"/issues",
+        element: <Issues/>
     },
     {
         path:"/blog",
         element: <Blog/>
     },
     {
+        path:"/admin",
+        element: <Admin/>
+    },
+    {
         path:"/login",
         element: <Login/>
+    },
+    {
+        path: "/profile",
+        element: <Profile/>
+    },
+    {
+        path: "/signup",
+        element: <SignUp/>
     },
     {
         path:"/admin/about",
         element: <AboutAdmin/>
     },
     {
-        path:"/admin/posts",
-        element: <PostsAdmin/>
-    },
-    {
-        path:"/admin/getInvolved",
-        element: <GetInvolvedAdmin/>
-    },
-    {
-        path:"/admin/contact",
-        element: <ContactAdmin/>
+        path:"/admin/issues",
+        element: <IssuesAdmin/>
     },
     {
         path:"/admin/blog",
         element: <BlogAdmin/>
     },
-    {
-        path:"/admin/home",
-        element: <HomeAdmin/>
-    }
 ]);
 const App = () => {
     return <RouterProvider router={router}/>;

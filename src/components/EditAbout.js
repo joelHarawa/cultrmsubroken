@@ -1,155 +1,137 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import styled from "styled-components";
+import {FaInstagram} from "react-icons/fa";
+import { FaEnvelope } from "react-icons/fa";
+import {Link} from "react-router-dom";
 import axios from "axios";
+import AdminNavbar from "../components/AdminNavbar";
 
 const Container = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    height: 90vh;
 `;
 
-const SubtitleBox = styled.div`
-    width: 80vw;
-`;
-
-const ButtonBox = styled.div`
-    padding: 15px;
-    width: 80vw;
-    display: flex;
-    justify-content: center;
-`;
-
-const Title = styled.h1`
-  font-family: 'Archivo Black', sans-serif;
-`;
-
-const Subtitle = styled.h2`
-  font-family: 'Archivo Black', sans-serif;
-`;
-
-const Body = styled.textarea`
-    height: 20vh;
-    width: 80vw;
-    padding: 5px;
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 18px;
-`;
-
-const Button = styled.button`
-  background-color: black;
-  color: white;
-  cursor: pointer;
-  padding: 1.5vh 5vw;
-  font-family: 'Cormorant Garamond', serif;
-  border: none;
-  font-size: 15px;
-`;
-
-const ImageContainer = styled.div`
+const Left = styled.div`
     display: flex;
     flex-direction: column;
-    width: 80vw;
-    height: 50vh;
-    margin-top: 10px;
-    background-color: #ddd;
-    justify-content: center;
-    align-items: center;
+    width: 55%;
+    justify-content: space-between;
 `;
 
-const Photo = styled.input`
-    display: none;
+const Right = styled.div`
+    display: flex;
+    width: 45%;
 `;
 
-const PhotoLabel = styled.label`
-    background-color: black;
-    color: white;
-    cursor: pointer;
-    padding: 1.5vh 5vw;
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 16px;
+const Wrapper = styled.div`
+    display: flex;
+    border: 2px solid black;
+    width: 80%;
+    height: 80%;
 `;
 
-const ImagePreview = styled.img`
-  width: 100%;
-  max-height: 100%;
-  background-color: #ddd;
-  object-fit: cover;
+const Socials = styled.div`
 `;
+
+const Text = styled.textarea`
+    border: 2px solid black;
+    width: 80%;
+    margin-left: 15%; 
+    font-family: "Poppins", sans-serif;
+    font-size: 22px;
+    padding: 3%;
+    height: 40%;
+`;
+
+const SocialLink = styled.a`
+    color: inherit;
+    text-decoration: none;
+    font-size: 38px;
+    margin-left: 20px; /* Adjust spacing as needed */
+`;
+
+const TopLeft = styled.div`
+    display: flex;
+`;
+const LogoContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+`;
+
+const LogoText = styled.div`
+    font-family: 'Playfair Display', serif;
+    font-size: 48px;
+    text-align: center;
+`;
+
+const RegularText = styled.span`
+    font-size: 68px;
+`;
+
+const MirroredR = styled.span`
+    transform: scaleX(-1);
+    display: inline-block;
+    font-size: 68px;
+`;
+const SubText = styled.span`
+    text-align: center;
+    font-size: 22px;
+`;
+
 const EditAbout = () => {
     const apiUrl = 'https://18.219.147.241';
-    const [intro, setIntro] = useState("");
-    const [body, setBody] = useState("");
-    const [photo, setPhoto] = useState("");
-    const handleSubmit = async () => {
-        try {
-            const about = new FormData();
-            about.append("intro", intro);
-            about.append("body", body);
-            about.append("photo", photo)
+    const [about, setAbout] = useState([]);
+    useEffect(() => {
+        const getAbout = async() => {
+            try {
+                console.log("get about")
+                const response = await axios.get(`${apiUrl}/api/post/getAbout`);
 
-
-            const response = await axios.post(`${apiUrl}/api/post/postAbout`, about, {
-                headers: {"Content-Type" : "multipart/form-data"},
-            });
-            console.log("Article successfully submitted:", response.data);
-        } catch (error) {
-            console.error("Error submitting article");
+                console.log(response.data);
+                setAbout(response.data);
+            } catch (error) {
+                console.log(error, "This failed");
+            }
         }
-    }
+        getAbout();
+    }, []);
 
-    const handleIntro = (e) => {
-        setIntro(e.target.value);
-    }
-
-    const handleUpload = (e) => {
-        setPhoto(e.target.files[0])
-        const reader = new FileReader();
-        reader.onloadend = () => {
-            document.getElementById("imagePreview").src = reader.result;
-            console.log("selected photo", photo);
-        }
-        if (photo) {
-            reader.readAsDataURL(photo);
-        }
-    }
-
-    const handleBody = (e) => {
-        setBody(e.target.value);
-    }
-
-
-
+    let index = about.length -1;
     return (
-        <Container>
-            <Title>About us</Title>
-            <SubtitleBox>
-                <Subtitle>Intro</Subtitle>
-            </SubtitleBox>
-            <Body placeholder="Enter intro...(show linebreaks with \n)"
-                value={intro}
-                onChange={handleIntro}/>
-            <SubtitleBox>
-                <Subtitle>Photo</Subtitle>
-            </SubtitleBox>
-            <ImageContainer>
-                <ImagePreview id="imagePreview" src={photo ? URL.createObjectURL(photo) : ""}/>
-                <Photo type="file" id="photoInput" accept="image/*" onChange={handleUpload}/>
-            </ImageContainer>
-            <ButtonBox>
-                <PhotoLabel htmlFor="photoInput">Upload Photo</PhotoLabel>
-            </ButtonBox>
-            <SubtitleBox>
-                <Subtitle>Body</Subtitle>
-            </SubtitleBox>
-            <Body placeholder="Enter intro...(show linebreaks with \n)"
-                  value={body}
-                  onChange={handleBody}/>
-            <ButtonBox>
-                <Button onClick={handleSubmit}>Submit Article</Button>
-            </ButtonBox>
-        </Container>
-    )
+        <>
+            <AdminNavbar/>
+            <Container>
+                <Wrapper>
+                    <Left>
+                        <TopLeft>
+                            <LogoContainer>
+                                <LogoText>
+                                    <RegularText>CULT</RegularText>
+                                    <MirroredR>R</MirroredR>
+                                </LogoText>
+                                <SubText>M A G A Z I N E</SubText>
+                            </LogoContainer>
+                        </TopLeft>
+                        <Text placeholder="Edit about us text"/>
+                        <Socials>
+                            <SocialLink href="https://www.instagram.com/cultr_magazine/">
+                                <FaInstagram/>
+                            </SocialLink>
+                            <SocialLink href="mailto:cultrm@gmail.com">
+                                <FaEnvelope/>
+                            </SocialLink>
+                            <SocialLink href="mailto:rso.cultrmagazine@msu.edu">
+                                <FaEnvelope/>
+                            </SocialLink>
+                        </Socials>
+                    </Left>
+                </Wrapper>
+            </Container>
+        </>
+    );
 }
 
 export default EditAbout;

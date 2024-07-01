@@ -2,81 +2,92 @@ import React, {useEffect, useState} from "react";
 import Navbar from "../components/Navbar";
 import styled from "styled-components";
 import {FaInstagram} from "react-icons/fa";
+import { FaEnvelope } from "react-icons/fa";
 import {Link} from "react-router-dom";
 import axios from "axios";
 
 const Container = styled.div`
     display: flex;
+    flex-direction: column;
+    justify-content: center;
     align-items: center;
+    height: 90vh;
 `;
 
-const InstagramLink = styled(Link)`
-    color: black;
-    text-decoration: none;
-    padding-top: 10px;
-    font-size: 30px;
-    width: fit-content;
+const Left = styled.div`
+    display: flex;
+    flex-direction: column;
+    width: 55%;
+    justify-content: space-between;
+`;
+
+const Right = styled.div`
+    display: flex;
+    flex:direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 45%;
+`;
+
+const Image = styled.img`
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
 `;
 
 const Wrapper = styled.div`
     display: flex;
-    flex: 1;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    border: 2px solid black;
+    width: 80%;
+    height: 80%;
 `;
 
-const Title = styled.h1`
-    font-size: calc(40px + 4vw);
-    font-family: 'Archivo Black', sans-serif;
-    text-align: center;
+const Socials = styled.div`
+`;
+
+const Text = styled.span`
+    width: 80%;
+    margin-left: 15%; 
+    font-family: "Poppins", sans-serif;
+    font-size: 22px;
+    padding: 3%;
+`;
+
+const SocialLink = styled.a`
+    color: inherit;
+    text-decoration: none;
+    font-size: 38px;
+    margin-left: 20px; /* Adjust spacing as needed */
+`;
+
+const TopLeft = styled.div`
     display: flex;
-    height: 20%;
-    line-height: 0.8;
+`;
+const LogoContainer = styled.div`
+    display: flex;
+    flex-direction: column;
 `;
 
-const Subtitle = styled.h2`
-  font-family: 'Archivo Black', sans-serif;
-  height: 5%;
-  line-height: 0.8;
-  justify-content: left;
+const LogoText = styled.div`
+    font-family: 'Playfair Display', serif;
+    font-size: 48px;
+    text-align: center;
 `;
 
-
-const Image = styled.img`
-    width: 50%;
+const RegularText = styled.span`
+    font-size: 68px;
 `;
 
-const Body = styled.p`
-    font-size: 20px;
-    font-family: 'Cormorant Garamond', serif;
-    width: 50%;
+const MirroredR = styled.span`
+    transform: scaleX(-1);
+    display: inline-block;
+    font-size: 68px;
+`;
+const SubText = styled.span`
+    text-align: center;
+    font-size: 22px;
 `;
 
-const SubWrapper = styled.div`
-    width: 90%;
-`;
-
-const Info = styled.div`
-  font-size: 20px;
-  font-family: 'Cormorant Garamond', serif;
-  width: 20%;
-  flex: 1;
-`;
-
-const InfoWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 70%;
-`;
-
-const MainWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-`;
 const About = () => {
     const apiUrl = 'https://18.219.147.241';
     const [about, setAbout] = useState([]);
@@ -97,35 +108,39 @@ const About = () => {
 
     let index = about.length -1;
     return (
-        <div>
+        <>
             <Navbar/>
             <Container>
                 <Wrapper>
-                    <Title>About Us</Title>
-                    {about.length === 0 ? (
-                        <MainWrapper>
-                    <Body>{"Loading..."}</Body>
-                    <Image src={"Loading"}/>
-                    <Body>{"Loading..."}</Body>
-                            </MainWrapper>) : (
-                                <MainWrapper>
-                    <Body>{about[index].intro}</Body>
-                    <Image src={about[index].photoUrl}/>
-                    <Body>{about[index].body}</Body>
-                                </MainWrapper>
-                )}
-                    <SubWrapper>
-                        <Subtitle>Get in Touch</Subtitle>
-                        <InfoWrapper>
-                            <Info>Bessey Room 300</Info>
-                            <InstagramLink to="https://www.instagram.com/cultr_magazine/">
+                    <Left>
+                        <TopLeft>
+                            <LogoContainer>
+                                <LogoText>
+                                    <RegularText>CULT</RegularText>
+                                    <MirroredR>R</MirroredR>
+                                </LogoText>
+                                <SubText>M A G A Z I N E</SubText>
+                            </LogoContainer>
+                        </TopLeft>
+                        <Text>We are a student run organization founded in 2023 at Michigan State University. Our goal on campus is to represent cultural fashion for all groups on campus. We plan to support Michigan State's campus creatively and inclusively. </Text>
+                        <Socials>
+                            <SocialLink href="https://www.instagram.com/cultr_magazine/">
                                 <FaInstagram/>
-                            </InstagramLink>
-                        </InfoWrapper>
-                    </SubWrapper>
+                            </SocialLink>
+                            <SocialLink href="mailto:cultrm@gmail.com">
+                                <FaEnvelope/>
+                            </SocialLink>
+                            <SocialLink href="mailto:rso.cultrmagazine@msu.edu">
+                                <FaEnvelope/>
+                            </SocialLink>
+                        </Socials>
+                    </Left>
+                    <Right>
+                        <Image src={require("../images/IMG_0782.jpeg")}/>
+                    </Right>
                 </Wrapper>
             </Container>
-        </div>
+        </>
     );
 }
 

@@ -3,7 +3,7 @@ import {useContext} from "react";
 import {AuthContext} from "../context/AuthContext";
 import {useNavigate} from "react-router-dom";
 import AdminNavbar from "../components/AdminNavbar";
-import WelcomeAdmin from "../components/WelcomeAdmin";
+import EditHome from "../components/EditHome";
 
 const Admin = () => {
     const {currentUser} = useContext(AuthContext);
@@ -22,7 +22,7 @@ const Admin = () => {
     return (
         <div>
             <AdminNavbar/>
-            <WelcomeAdmin/>
+            <EditHome/>
         </div>
     );
 }
