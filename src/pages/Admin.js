@@ -6,16 +6,17 @@ import AdminNavbar from "../components/AdminNavbar";
 import EditHome from "../components/EditHome";
 
 const Admin = () => {
-    const {currentUser} = useContext(AuthContext);
+    const {admin, getAdminProfile} = useContext(AuthContext);
     const navigate = useNavigate();
     useEffect(() => {
-        console.log(currentUser)
-        if (!currentUser) {
-            navigate("/login");
+        getAdminProfile();
+        console.log(admin)
+        if (!admin) {
+            navigate("/adminLogin");
         }
     });
 
-    if (!currentUser) {
+    if (!admin) {
         return null;
     }
 

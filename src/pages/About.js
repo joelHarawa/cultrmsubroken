@@ -1,3 +1,9 @@
+/*
+Title: About.js
+Author: Joel Harawa
+Purpose: Display the about page to the user
+*/
+
 import React, {useEffect, useState} from "react";
 import Navbar from "../components/Navbar";
 import styled from "styled-components";
@@ -6,6 +12,7 @@ import { FaEnvelope } from "react-icons/fa";
 import {Link} from "react-router-dom";
 import axios from "axios";
 
+// Styled components
 const Container = styled.div`
     display: flex;
     flex-direction: column;
@@ -63,6 +70,7 @@ const SocialLink = styled.a`
 const TopLeft = styled.div`
     display: flex;
 `;
+
 const LogoContainer = styled.div`
     display: flex;
     flex-direction: column;
@@ -83,6 +91,7 @@ const MirroredR = styled.span`
     display: inline-block;
     font-size: 68px;
 `;
+
 const SubText = styled.span`
     text-align: center;
     font-size: 22px;
@@ -91,12 +100,12 @@ const SubText = styled.span`
 const About = () => {
     const apiUrl = 'https://18.219.147.241';
     const [about, setAbout] = useState([]);
+
+    // Get the content to display from the backend 
     useEffect(() => {
         const getAbout = async() => {
             try {
-                console.log("get about")
-                const response = await axios.get(`${apiUrl}/api/post/getAbout`);
-
+                const response = await axios.get(`${apiUrl}/api/get/about`);
                 console.log(response.data);
                 setAbout(response.data);
             } catch (error) {
@@ -107,6 +116,7 @@ const About = () => {
     }, []);
 
     let index = about.length -1;
+    if (about.length > 0) {
     return (
         <>
             <Navbar/>
@@ -122,7 +132,7 @@ const About = () => {
                                 <SubText>M A G A Z I N E</SubText>
                             </LogoContainer>
                         </TopLeft>
-                        <Text>We are a student run organization founded in 2023 at Michigan State University. Our goal on campus is to represent cultural fashion for all groups on campus. We plan to support Michigan State's campus creatively and inclusively. </Text>
+                        <Text>{about[index].body ? about[index].body : "Loading..."}</Text>
                         <Socials>
                             <SocialLink href="https://www.instagram.com/cultr_magazine/">
                                 <FaInstagram/>
@@ -136,12 +146,13 @@ const About = () => {
                         </Socials>
                     </Left>
                     <Right>
-                        <Image src={require("../images/IMG_0782.jpeg")}/>
+                        <Image src={about[index].photoUrl ? about[index].photoUrl : ""}/>
                     </Right>
                 </Wrapper>
             </Container>
         </>
     );
+    }
 }
 
 export default About;

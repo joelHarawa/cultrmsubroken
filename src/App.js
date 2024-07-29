@@ -11,7 +11,12 @@ import IssuesAdmin from "./pages/IssuesAdmin";
 import BlogAdmin from "./pages/BlogAdmin";
 import SignUp from "./pages/SignUp";
 import Profile from "./pages/Profile";
-
+import LoginAdmin from "./pages/LoginAdmin";
+import SignUpAdmin from "./pages/SignUpAdmin";
+import AddBlogPost from "./pages/AddBlogPost";
+import AllBlogPosts from "./pages/AllBlogPosts";
+import EditLogin from "./pages/EditLogin";
+import EditSignUp from "./pages/EditSignUp";
 
 const router = createHashRouter([
     {
@@ -27,8 +32,16 @@ const router = createHashRouter([
         element: <Issues/>
     },
     {
-        path:"/blog",
+        path:"/blog/:id",
         element: <Blog/>
+    },
+    {
+        path:"/blog/addpost",
+        element: <AddBlogPost/>
+    },
+    {
+        path:"/blog/allposts",
+        element: <AllBlogPosts/>
     },
     {
         path:"/admin",
@@ -39,12 +52,32 @@ const router = createHashRouter([
         element: <Login/>
     },
     {
+        path:"/signup",
+        element: <SignUp/>
+    },
+    {
+        path:"/admin/login",
+        element: <EditLogin/>
+    },
+    {
         path: "/profile",
         element: <Profile/>
     },
     {
-        path: "/signup",
+        path: "/admin/signup",
+        element: <EditSignUp/>
+    },
+    {
+        path: "/admin",
         element: <SignUp/>
+    },
+    {
+        path:"/adminLogin",
+        element: <LoginAdmin/>
+    },
+    {
+        path:"/adminSignup",
+        element: <SignUpAdmin/>
     },
     {
         path:"/admin/about",

@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import axios from "axios";
 
-function importAll(r) {
-    return r.keys().map(r);
-}
-
-const images = importAll(require.context('../images/slides', false, /\.(png|jpe?g|svg)$/));
+// Styled components
 
 const Container = styled.div`
     display: flex;
@@ -46,38 +43,56 @@ const Button = styled.button`
 `;
 
 const Slides = () => {
+    const [slides, setSlides] = useState([]);
     const [currentIndex, setCurrentIndex] = useState(0);
+    const apiUrl = 'https://18.219.147.241';
+
+    useEffect(() => {
+        const getSlides = async () => {
+            try {
+                const response = await axios.get(`${apiUrl}/api/get/getSlide`);
+                console.log(response);
+                setSlides(response.data);
+                console.log(response.data);
+            } catch (error) {
+                console.log("Failed to get the Slides", error);
+            }
+        }
+        getSlides();
+    }, []);
 
     const prevSlide = () => {
         setCurrentIndex((prevIndex) => 
-            prevIndex === 0 ? images.length - 1 : prevIndex - 1  
+            prevIndex === 0 ? slides.length - 1 : prevIndex - 1  
         )
     }
 
     const nextSlide = () => {
         setCurrentIndex((prevIndex) => 
-            prevIndex === images.length - 1 ? 0 : prevIndex + 1  
+            prevIndex === slides.length - 1 ? 0 : prevIndex + 1  
         )
     }
 
     useEffect(() => {
         const interval = setInterval(nextSlide, 5000);
         return () => clearInterval(interval);
-    }, []);
+    }, [slides]);
 
-    return (
-        <Container>
-            <SlideImage src={images[currentIndex]}/>
-            <ButtonContainer>
-                <Button onClick={prevSlide}>
-                    <FaChevronLeft/>
-                </Button>
-                <Button onClick={nextSlide}>
-                    <FaChevronRight/>
-                </Button>
-            </ButtonContainer>
-        </Container>
-    )
+    if (slides.length > 0) {
+        return (
+            <Container>
+                <SlideImage src={slides[currentIndex].photoUrl}/>
+                <ButtonContainer>
+                    <Button onClick={prevSlide}>
+                        <FaChevronLeft/>
+                    </Button>
+                    <Button onClick={nextSlide}>
+                        <FaChevronRight/>
+                    </Button>
+                </ButtonContainer>
+            </Container>
+        )
+    }
 }
 
 export default Slides;

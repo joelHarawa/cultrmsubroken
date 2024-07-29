@@ -1,24 +1,21 @@
+/*
+Title: Issues.js
+Author: Joel Harawa
+Purpose: Display the home page to the user
+*/
+
 import React, {useEffect, useState} from "react";
 import Navbar from "../components/Navbar";
 import axios from "axios";
 import styled from "styled-components";
 import {useParams} from "react-router-dom";
 
+
+// Styled components
 const Container = styled.div`
     display: flex;
-    flex-direction: column;
-`;
-
-const IssuesBar = styled.div`
-    height:8vh;
-    background-color: white;
-`;
-
-const Wrapper = styled.div`
-    padding: 10px 20px;
-    display: flex;
     align-items: center;
-    justify-content: space-around;
+    justify-content: center;
 `;
 
 const Issue = styled.button`
@@ -41,6 +38,11 @@ const IssueContent = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    &:hover {
+        text-decoration: underline;
+        cursor: pointer;
+    }
+    width: 33%;
 `;
 
 const Cover = styled.img`
@@ -58,37 +60,21 @@ const Metadata = styled.p`
 
 const Issues = () => {
     const apiUrl = 'https://18.219.147.241';
-    const [issue, setissue] = useState(-1);
-    const {postIndex} = useParams();
-    const [posts, setPosts] = useState([]);
-    const [postNumber, setPostNumber] = useState(parseInt(postIndex,10) || 0);
+    const [issues, setIssues] = useState([]);
 
-
-    const handlePreviousClick = () => {
-        // Decrease the post number when the "PREVIOUS POST" is clicked
-        if (postNumber > 0) {
-            setPostNumber(postNumber-1);
-        } else {
-            setPostNumber(posts.length-1);
-        }
-    };
-
-    const handleNextClick = () => {
-        // Increase the post number when the "NEXT POST" is clicked
-        if (postNumber === posts.length-1) {
-            setPostNumber(0);
-        } else {
-            setPostNumber(postNumber+1)
-        }
+    const handleClick = (pdfUrl) => {
+        const newWindow = window.open("", "_blank");
+        newWindow.document.write(
+            `<iframe src="${pdfUrl}" frameborder="0" style="border:0; top:0; left:0; bottom:0; right:0; width:100%; height:100%;" allowfullscreen></iframe>`
+        );
     };
 
     useEffect(() => {
         const getPosts = async() => {
             try {
-                console.log("get that post")
-                const response = await axios.get(`${apiUrl}/api/post/getPost`);
-                console.log(response.data);
-                setPosts(response.data);
+                const response = await axios.get(`${apiUrl}/api/get/getIssue`);
+                console.log(response);
+                setIssues(response.data);
             } catch (error) {
                 console.log(error, "This failed");
             }
@@ -99,17 +85,16 @@ const Issues = () => {
     return (
         <>
             <Navbar/>
+            {issues.length > 0 ? (
             <Container>
-            <IssuesBar>
-                <Wrapper>
-                    <Issue onClick={""}>2024 FALL</Issue>
-                </Wrapper>
-            </IssuesBar>
-            <IssueContent>
-                <Cover src={require("../images/CULTR Magazine Final.jpg")}/>
-                <Metadata>Finding Culuture at MSU</Metadata>
+            <IssueContent onClick={() => handleClick(issues[0].pdfUrl)}>
+                <Issue>{issues[0].edition}</Issue>
+                <Cover src={issues[0].photoUrl}/>
+                <Metadata>{issues[0].title}</Metadata>
             </IssueContent>
             </Container>
+            ) : ""
+            }
         </>
     );
 }

@@ -1,9 +1,17 @@
+/*
+Title: SignUp.js
+Author: Joel Harawa
+Purpose: Display the sign up page to the user
+*/
+
 import styled from "styled-components";
 import Navbar from "../components/Navbar";
-import { useContext, useState } from "react";
+import React, { useEffect, useContext, useState } from "react";
 import {AuthContext} from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
+// Styled components
 const Container = styled.div`
     display: flex;
     align-items: center;
@@ -101,12 +109,14 @@ const Error = styled.p`
 `;
 
 const SignUp = () => {
+    const apiUrl = 'https://18.219.147.241';
     const {signup} = useContext(AuthContext);
     const navigate = useNavigate();
     const [serverError, setServerError] = useState("");
     const [emailError, setEmailError] = useState(false);
     const [passwordError, setPassowrdError] = useState(false);
     const [nameError, setNameError] = useState(false);
+    const [photos, setPhotos] = useState([]);
 
     const [inputs, setInputs] = useState({
         firstName: "",
@@ -164,12 +174,26 @@ const SignUp = () => {
         console.log(inputs);    
     }
 
+    useEffect(() => {
+        const getPhotos = async() => {
+            try {
+                const response = await axios.get(`${apiUrl}/api/get/getSignup`);
+                console.log(response);
+                setPhotos(response.data);
+            } catch (error) {
+                console.log(error, "This failed");
+            }
+        }
+        getPhotos();
+    })
+
     return(
         <>
             <Navbar/>
+            {photos.length ? 
             <Container>
                 <ImageContainer>
-                    <Image src={require("../images/Cultural Vogue IMG_4291[17955].jpeg")}/>
+                    <Image src={photos[0].photoLeftUrl}/>
                 </ImageContainer>
                 <Wrapper>
                     <Head>
@@ -211,9 +235,10 @@ const SignUp = () => {
                     </ButtonBlock>
                 </Wrapper>
                 <ImageContainer>
-                    <Image src={require("../images/IMG_2101.JPG")}/>
+                    <Image src={photos[0].photoRightUrl}/>
                 </ImageContainer>
             </Container>
+            : ""}
         </>
     )    
 }

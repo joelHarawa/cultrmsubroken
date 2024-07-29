@@ -6,16 +6,16 @@ import AdminNavbar from "../components/AdminNavbar";
 import EditAbout from "../components/EditAbout";
 
 const AboutAdmin = () => {
-    const {currentUser} = useContext(AuthContext);
+    const {admin} = useContext(AuthContext);
     const navigate = useNavigate();
     useEffect(() => {
-        console.log(currentUser)
-        if (!currentUser) {
-            navigate("/login");
+        console.log(admin)
+        if (!admin) {
+            navigate("/adminLogin");
         }
     });
 
-    if (!currentUser) {
+    if (!admin) {
         return null;
     }
 

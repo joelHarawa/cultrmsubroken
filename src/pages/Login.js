@@ -1,9 +1,18 @@
-import React, {useContext, useState} from "react";
-import {useNavigate} from "react-router-dom";
+/*
+Title: Login.js
+Author: Joel Harawa
+Purpose: Display the login page to the user
+*/
+
+import React, { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import styled from "styled-components";
-import {AuthContext} from "../context/AuthContext";
+import { AuthContext } from "../context/AuthContext";
+import { Link } from "react-router-dom";
+import axios from "axios";
 
+// Styled Components
 const Container = styled.div`
     display: flex;
     align-items: center;
@@ -18,7 +27,6 @@ const Wrapper = styled.div`
     justify-content: center;
     width: 40%;
 `;
-
 
 const ImageContainer = styled.div`
     display: flex;
@@ -86,6 +94,12 @@ const Error = styled.p`
     height: 1vh;
 `;
 
+const Info = styled.p`
+    font-size: 16px;
+    font-family: "DM Sans", serif;
+    height: 1vh;
+`;
+
 const Button = styled.button`
     font-family: "DM Sans", serif;
     border: none;
@@ -101,22 +115,31 @@ const Button = styled.button`
     }
 `;
 
+const SignUp = styled(Link)`
+    color: blue;
+`;
 
+// Login component, user enters credentials and submits to be verified
 const Login = () => {
+    // Credential variables
     const [inputs, setInputs] = useState({
         email:"",
         password:""
     });
+    const [photos, setPhotos] = useState([]);
     const [serverError, setServerError] = useState("");
     const [emailError, setEmailError] = useState(false);
     const [passwordError, setPassowrdError] = useState(false);
+    const apiUrl = 'https://18.219.147.241';
     const {login} = useContext(AuthContext);
     const navigate = useNavigate();
 
+    // Change the values being saved in the inputs as it is being typed 
     const handleChange = e => {
         setInputs(prev=>({...prev, [e.target.name]: e.target.value}));
     }
 
+    // Verify the email entered is a valid email
     const validateEmail = () => {
         const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (regex.test(inputs.email)) {
@@ -127,7 +150,8 @@ const Login = () => {
         setEmailError(true);
         return false;
     }
-
+    
+    // Verify the password entered is a valid password
     const validatePassword = () => {
         const regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/;
         if (regex.test(inputs.password)) {
@@ -137,13 +161,14 @@ const Login = () => {
         setPassowrdError(true);
         return false;
     }
-
+    
+    // Send the email and the password to the backend for verification
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (validateEmail() && validatePassword()) {
             try {
                 await login(inputs);
-                navigate("/blog");
+                navigate("/blog/allposts");
             } catch (error) {
                 console.log("Error during login:", error);
                 setServerError(error.response.data.message);
@@ -152,12 +177,27 @@ const Login = () => {
 
         }
     }
+
+    useEffect(() => {
+        const getPhotos = async() => {
+            try {
+                const response = await axios.get(`${apiUrl}/api/get/getLogin`);
+                console.log(response);
+                setPhotos(response.data);
+            } catch (error) {
+                console.log(error, "This failed");
+            }
+        }
+        getPhotos();
+    })
+
     return(
       <>
           <Navbar/>
+          {photos.length > 0 ? 
           <Container>
               <ImageContainer>
-                  <Image src={require("../images/IMG_7461.jpeg")}/>
+                  <Image src={photos[0].photoLeftUrl}/>
               </ImageContainer>
               <Wrapper>
                   <Head>
@@ -173,6 +213,7 @@ const Login = () => {
                         <Error>It should be of the form: "email@domain.com"</Error>
                     </ErrorBlock> : 
                    "" }
+                   <Info>New user? sign up <SignUp to={"/signup"}>here</SignUp>.</Info>
                    {passwordError === true ? 
                   <ErrorBlock>
                         <Error>Error: check your password</Error>
@@ -190,9 +231,10 @@ const Login = () => {
                   </ButtonBlock>
               </Wrapper>
               <ImageContainer>
-                  <Image src={require("../images/IMG_1547.jpeg")}/>
+                  <Image src={photos[0].photoRightUrl}/>
               </ImageContainer>
           </Container>
+        : "" }
       </>
   )
 }

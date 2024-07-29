@@ -136,8 +136,7 @@ const NewComponent = () => {
         setTag(e.target.value);
     }
     const handleUpload = (e) => {
-        setPhoto(e.target.files[0])
-
+        setPhoto(e.target.files[0]);
 
         const reader = new FileReader();
         reader.onloadend = () => {

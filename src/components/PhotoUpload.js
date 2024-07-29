@@ -22,7 +22,6 @@ const ImagePreview = styled.img`
   margin-top: 10px;
 `;
 
-
 const PhotoUpload = () => {
     const [photo, setPhoto] = useState(null);
     const handleUpload = (event) => {

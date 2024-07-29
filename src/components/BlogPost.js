@@ -1,5 +1,15 @@
+import axios from "axios";
+import { useEffect, useState, useContext } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
+import { 
+    FaChevronLeft, FaChevronRight, FaNewspaper, FaPlus,
+    FaStar
+ } from "react-icons/fa";
+import { AuthContext } from "../context/AuthContext";
 
+
+// Styled components
 const Container = styled.div`
     display: flex;
     flex-direction: column;
@@ -26,7 +36,7 @@ const Head = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
-    height: 8vh;
+    height: 10vh;
     width: 90%;
 `;
 
@@ -83,41 +93,241 @@ const Title = styled.h1`
     font-family: "Poppins", sans-serif;
 `;
 
+const Left = styled.div`
+    display: flex;
+    width: 20%;
+`;
+
+const Right = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 20%;
+    height: 100%;
+`;
+
+const ButtonContainer = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    position: absolute;
+    position: fixed;
+    top: 50%;
+`;
+
+const Buttons = styled.div`
+    display: flex;
+    justify-content: space-between;
+    width: 90%;
+`;
+
+const Arrow = styled.button`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border-radius: 50%;
+    border: none;
+    padding: 18px;
+    font-size: 18px;
+    opacity: 0.5;
+    &:hover {
+        opacity: 1;
+    }
+`;
+
+const Actions = styled.div`
+    display: flex;
+    width 100%;
+    height: 10%;
+    align-items: center;
+`;
+
+const Button = styled.button`
+    border: 1px solid black;
+    background-color: white;
+    display: flex;
+    align-items: center;
+    font-family: "Poppins", sans-serif;
+    font-size: 18px;
+    padding: 5px;
+    margin-top: 10px;
+    margin-left: 10px;
+    &:hover {
+        background-color: black;
+        color: white;
+        cursor: pointer;
+    }
+`;
+
+const Favorite = styled.button`
+    border: 1px solid black;
+    background-color: ${props => props.isFavorite ? 'yellow' : 'white'};
+    color: ${props => props.isFavorite ? 'black' : 'initial'};
+    display: flex;
+    align-items: center;
+    font-family: "Poppins", sans-serif;
+    font-size: 18px;
+    padding: 5px;
+    margin-top: 10px;
+    margin-left: 10px;
+    &:hover {
+        background-color: black;
+        color: white;
+        cursor: pointer;
+    }
+`;
+
+export const formatTime = (timestamp) => {
+    const now = new Date();
+    const postDate = new Date(timestamp);
+    const diffInMs = now - postDate;
+    const diffInMinutes = Math.floor(diffInMs / 60000);
+    const diffInHours = Math.floor(diffInMs / 3600000);
+    const diffInDays = Math.floor(diffInMs / 86400000);
+
+    if (diffInMinutes < 60) {
+        return `${diffInMinutes} minutes ago`;
+    } else if (diffInHours < 24) {
+        return `${diffInHours} hours ago`;
+    } else {
+        return postDate.toLocaleDateString();
+    }
+}
+
 
 const BlogPost = () => {
-    return (
-        <Container>
-            <Cover>
-                <CoverImage src={require("../images/P1010492.JPG")}/>
-            </Cover>
-            <Head>
-                <Title>Valentine's Day Photo Shoot</Title>
-            </Head>
-            <Head>
-                <Author>
-                    <Profile>
-                        <ProfileImage src={require("../images/P1010492.JPG")}/>
-                    </Profile>
-                    <AuthorName>Alicia Keys</AuthorName>
-                </Author>
-                <Time>
-                    <TimeText>6/25/2024</TimeText>
-                </Time>
-            </Head>
-            <Content>
-                <Text>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vitae cursus tortor, in iaculis tortor. Quisque aliquam metus nec nisi ultricies, rhoncus dapibus orci vehicula. Duis auctor commodo lacinia. Proin non risus gravida leo gravida ullamcorper. Mauris semper augue nec nisl tristique ultricies. Aenean molestie luctus feugiat. Donec velit lorem, interdum vitae orci non, dictum finibus dolor. Maecenas imperdiet risus eu egestas tristique. Mauris gravida dui magna, et molestie dui blandit vel. Vestibulum laoreet mi id lectus venenatis porttitor. Nullam finibus imperdiet suscipit. Pellentesque suscipit nec ex eget eleifend. Aliquam vitae libero nec augue consequat hendrerit. Praesent fermentum nunc tortor, ut condimentum ex viverra sed. Mauris nec lobortis velit.
+    const { user } = useContext(AuthContext);
+    const navigate = useNavigate();
+    /* Need to make functions to get the current post and functions to
+       get the next post 
+    */
+    const apiUrl = 'https://18.219.147.241';
+    const { id } = useParams();
+    const [index, setIndex] = useState(id);
+    const [posts, setPosts] = useState([]);
+    const [isFavorite, setIsFavorite] = useState(false);
+    useEffect(()=> {
+        const getPosts = async () => {
+            try {
+            const response = await axios.get(`${apiUrl}/api/get/getPost`);
+            console.log(response);
+            setPosts(response.data);
+            } catch (error) {
+                console.error(error);
+            } 
+        }
+        getPosts();
+    }, []);
+    const addPost = () => {
+        if (!user) {
+            navigate("/login");
+        } else {
+            navigate("/blog/addpost")
+        }
+    }
 
-Nullam venenatis nec massa sit amet tempor. <br/><br/>Phasellus ligula neque, luctus nec posuere sit amet, pulvinar sit amet urna. Etiam massa eros, laoreet quis hendrerit a, semper at ipsum. Nam dui justo, auctor at placerat non, malesuada ac libero. Integer est ex, consequat sit amet nisl sed, gravida finibus enim. In blandit rhoncus turpis, non auctor nulla condimentum ac. Quisque eget magna ex.
+    const allPosts = () => {
+        navigate("/blog/allposts")
+    }
 
-Nulla facilisi. Curabitur lacinia vel ipsum a sodales. Morbi vel elit molestie arcu hendrerit finibus.<br/><br/> Quisque pulvinar tempus nibh at commodo. Morbi vel dignissim risus. Pellentesque id augue ac nisl tincidunt dapibus id quis arcu. Quisque id purus eget massa convallis blandit. Vivamus mattis varius nibh quis fringilla. Pellentesque hendrerit nisl sed erat egestas aliquet. Morbi vel risus lacus.
+    const nextPost = () => {
+        setIndex(prevIndex => {
+            const newIndex = (prevIndex + 1) % posts.length; // Wrap around to 0 if at the end
+            navigate(`/blog/${newIndex}`);
+            return newIndex;
+        });
+    }
 
-Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Maecenas molestie efficitur eros, in varius sapien tincidunt vitae. Nam commodo massa id mi consectetur rhoncus.<br/><br/> Fusce hendrerit pharetra massa quis semper. Etiam feugiat laoreet maximus. Pellentesque aliquam malesuada cursus. Ut sem est, pulvinar nec erat nec, tincidunt finibus nulla. Praesent vehicula tellus eros, ut porta erat condimentum vel. Etiam pharetra odio a sapien egestas, vitae auctor diam finibus. Quisque eget elit feugiat, ullamcorper lacus eu, facilisis nisi. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. In in enim sed felis tincidunt blandit. Aliquam nec placerat lectus, quis tincidunt ligula.
+    const lastPost = () => {
+        setIndex(prevIndex => {
+            const newIndex = (prevIndex - 1 + posts.length) % posts.length; // Wrap around to last post if at the beginning
+            navigate(`/blog/${newIndex}`);
+            return newIndex;
+        });
+    }
 
-Quisque elementum tempor arcu.<br/><br/> Quisque et dui vitae risus vestibulum pharetra a a lacus. Vestibulum commodo eu tellus non faucibus. Fusce maximus fermentum mauris, ac ultrices metus imperdiet et. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Morbi facilisis sed sem eget egestas. Duis quis eros ornare, finibus nunc sodales, venenatis orci. Proin faucibus rhoncus mi, ac finibus enim volutpat nec. Duis ac quam non leo ultrices tincidunt. Vivamus efficitur et velit id mattis. Donec porta tristique nisl sed iaculis. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</Text>
-            </Content>
-        </Container>
-    )
+    const formatText = (text) => {
+        return text.replace(/\r\n/g, '<br/>');
+    };
 
+    const addToFavorites = async () => {
+        setIsFavorite(prevState => !prevState);
+        if (isFavorite && user) {
+            try {
+                const response = await axios.post(`${apiUrl}/api/post/addFavorite`, {user: user.email, post: posts[index]});
+                console.log(response);
+            } catch (error) {
+                console.error("Couldn't set favorite", error);
+            }
+        } else if (isFavorite && !user) {
+            navigate("/login");
+        }
+    }
+    
+
+    if (posts.length) {
+        console.log(posts[index]);
+        return (
+            <>
+            <ButtonContainer>
+                    <Buttons>
+                        <Arrow onClick={lastPost}>
+                            <FaChevronLeft/>
+                        </Arrow>
+                        <Arrow onClick={nextPost}>
+                            <FaChevronRight/>
+                        </Arrow>
+                    </Buttons>
+            </ButtonContainer>
+            <Left/>
+            <Container>
+                <Cover>
+                    <CoverImage src={posts[id].photoUrl}/>
+                </Cover>
+                <Head>
+                    <Title>{posts[id].title}</Title>
+                </Head>
+                <Head>
+                    <Author>
+                        <Profile>
+                            <ProfileImage src={posts[id].profilePicture}/>
+                        </Profile>
+                        <AuthorName>{posts[id].firstName} {posts[id].lastName}</AuthorName>
+                    </Author>
+                    <Time>
+                        <TimeText>{formatTime(posts[id].createdAt)}</TimeText>
+                    </Time>
+                </Head>
+                <Content>
+                    <Text dangerouslySetInnerHTML={{ __html: formatText(posts[id].body)}}/>
+                </Content>
+            </Container>
+            <Right>
+                    <Actions>
+                        <Button onClick={addPost}>
+                            <FaPlus/>
+                            &nbsp;
+                            Add Post
+                        </Button>
+                        <Button onClick={allPosts}>
+                            <FaNewspaper/>
+                            &nbsp;
+                            All Posts
+                        </Button>
+                    </Actions>
+                    <Actions>
+                        <Favorite isfavorite={isFavorite} onClick={addToFavorites}>
+                            <FaStar/>
+                            &nbsp;
+                            Favorite
+                        </Favorite>
+                    </Actions>
+                </Right>
+            </>
+        )
+    }
 }
 
 export default BlogPost;

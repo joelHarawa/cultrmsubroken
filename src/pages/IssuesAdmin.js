@@ -1,28 +1,28 @@
 import React, {useEffect} from "react";
-import NewComponent from "../components/NewComponent";
 import {useContext} from "react";
 import {AuthContext} from "../context/AuthContext";
 import {useNavigate} from "react-router-dom";
 import AdminNavbar from "../components/AdminNavbar";
+import EditIssues from "../components/EditIssues";
 
 const IssuesAdmin = () => {
-    const {currentUser} = useContext(AuthContext);
+    const {admin} = useContext(AuthContext);
     const navigate = useNavigate();
     useEffect(() => {
-        console.log(currentUser)
-        if (!currentUser) {
-            navigate("/login");
+        console.log(admin)
+        if (!admin) {
+            navigate("/adminLogin");
         }
     });
 
-    if (!currentUser) {
+    if (!admin) {
         return null;
     }
 
     return (
         <div>
             <AdminNavbar/>
-            <NewComponent/>
+            <EditIssues/>
         </div>
     );
 }
